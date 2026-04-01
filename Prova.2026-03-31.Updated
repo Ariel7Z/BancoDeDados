@@ -1,0 +1,80 @@
+CREATE TABLE DIMENSAO (
+	ID_DIMENSAO SERIAL PRIMARY KEY,
+	NOME_DIMENSAO VARCHAR(10)
+);
+
+SELECT
+	*
+FROM
+	DIMENSAO;
+
+CREATE TABLE REGDEVIDA (
+	ID_VIDA SERIAL PRIMARY KEY,
+	NOME_VIDA VARCHAR(50),
+	OMEGA NUMERIC,
+	IDFK_DIMENSAO INT,
+	FOREIGN KEY (IDFK_DIMENSAO) REFERENCES DIMENSAO (ID_DIMENSAO)
+);
+
+SELECT
+	*
+FROM
+	REGDEVIDA;
+
+INSERT INTO
+	DIMENSAO (NOME_DIMENSAO)
+VALUES
+	('C774'),
+	('C875'),
+	('A123'),
+	('B456');
+
+SELECT
+	*
+FROM
+	DIMENSAO;
+
+INSERT INTO
+	REGDEVIDA (NOME_VIDA, OMEGA, IDFK_DIMENSAO)
+VALUES
+	('Ana Cristina Prime', 0.12345, 1),
+	('Ana Cristina Clone', 0.11111, 2),
+	('Darlana-X', 0.54321, 2),
+	('Fernanda Alpha', 0.33333, 1),
+	('Acassio Beta', 0.22222, 2),
+	('Ariel_01', 0.44444, 1),
+	('Saymon Omega', 0.55555, 2),
+	('Joao Prime', 0.88888, 2),
+	('Maria Beta', 0.99999, 1),
+	('Ana Cristina Z', 0.13579, 3),
+	('Fernanda X', 0.24680, 4),
+	('Anacristina Mist', 0.10101, 1),
+	('Darlanna Prime', 0.20202, 2),
+	('Fernannda Alpha', 0.30303, 1),
+	('Acácio Beta', 0.40404, 2),
+	('Ariell Clone', 0.50505, 1),
+	('Saymom Omega', 0.60606, 2);
+
+SELECT
+	*
+FROM
+	REGDEVIDA;
+
+SELECT
+	NOME_VIDA,
+	ROUND(OMEGA * 1.618, 3) AS FATOR_N
+FROM
+	REGDEVIDA
+	INNER JOIN DIMENSAO ON REGDEVIDA.IDFK_DIMENSAO = DIMENSAO.ID_DIMENSAO
+WHERE
+	NOME_DIMENSAO IN ('C875', 'C774')
+	AND (
+		NOME_VIDA ILIKE '%Ana Cristina%'
+		OR NOME_VIDA ILIKE '%Darlana%'
+		OR NOME_VIDA ILIKE '%Fernanda%'
+		OR NOME_VIDA ILIKE '%Acassio%'
+		OR NOME_VIDA ILIKE '%Ariel%'
+		OR NOME_VIDA ILIKE '%Saymon%'
+	)
+ORDER BY
+	OMEGA;
